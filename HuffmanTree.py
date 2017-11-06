@@ -45,14 +45,30 @@ class HuffmanTree:
         print(heap)
         self.root = heappop(heap)[1]
 
+    def construct_tree_heapless(self):
+        sym_freq_list = []
+        for sym, wt in self.symbol_map.items():
+            sym_freq_list.append([wt, Node(sym, wt)])
+        sym_freq_list = sorted(sym_freq_list, key=lambda l: l[0], reverse=True)
+        while len(sym_freq_list) > 1:
+            lo = sym_freq_list.pop()
+            hi = sym_freq_list.pop()
+            left_node = hi[1]
+            right_node = lo[1]
+            new_node = Node("NODE", lo[0] + hi[0])
+            new_node.left = left_node
+            new_node.right = right_node
+            sym_freq_list.append([new_node.freq, new_node])
+            sym_freq_list = sorted(sym_freq_list, key=lambda l: l[0], reverse=True)
+        print(sym_freq_list)
+        self.root = sym_freq_list.pop()[1]
+
     def string_tree(self, node):
 
         if node is None:
             return ""
         else:
             return "(" + self.string_tree(node.left) + str(node.symbol) + self.string_tree(node.right) + ")"
-
-
 
 
     def get_tree_abstract(self):
